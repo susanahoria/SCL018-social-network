@@ -6,29 +6,25 @@ export const newPost = (posts) => {
   const newPostContainer = document.querySelector("#postSection");
   newPostContainer.innerHTML = "";
   const feedContent = (e) => {
-    // console.log(e.element);
-    // const postsValues = Object.values(postData);
-    // console.log(postsValues);
-    // console.log(postData);
     let feedHtml = `<div class="post-user" id=${e.element.id}>
-            <div class="profile-container">
-            <div class="pic-container">
-            <img class="pic-profile" src="resources/images/gamer.png" alt="user" />
-            </div>
-            <h3 class="title-profile">${
-              e.element.data.username === null
-                ? "Anonimo"
-                : e.element.data.username
-            }</h3>
-            </div>`;
+        <div class="profile-container">
+        <div class="pic-container">
+         <img class="pic-profile" src="resources/images/gamer.png" alt="user" />
+        </div>
+          <h3 class="title-profile">${
+            e.element.data.username === null
+              ? "Anonimo"
+              : e.element.data.username
+          }</h3>
+    </div>`;
 
     if (e.element.data.userId === auth.currentUser.uid) {
       feedHtml += `<div class="textarea-container">
       <textarea class="post-theme" id="postTheme" cols="10" rows="1" readonly>${e.element.data.theme}</textarea>
-     <textarea class="post-message" id="postMessage" cols="15" rows="5" readonly>${e.element.data.message}</textarea>
+      <textarea class="post-message" id="postMessage" cols="15" rows="5" readonly>${e.element.data.message}</textarea>
       </div>
       <div class="icons-container">
-     <div class="like-container">
+      <div class="like-container">
       <img src="./resources/images/corazon.png" alt="like">
       </div>
       <div class="trash-container"> 
@@ -63,17 +59,18 @@ export const newPost = (posts) => {
     });
   });
   const editBtn = newPostContainer.querySelectorAll("#editBtn");
-  const postTheme = newPostContainer.querySelector("#postTheme");
-  const postMessage = newPostContainer.querySelector("#postMessage");
-
   editBtn.forEach((edit) => {
     edit.addEventListener("click", () => {
       const postId = edit.value;
       const parentDivPost = document.getElementById(postId);
-      const theme = parentDivPost.querySelector("#postTheme").value;
-      const message = parentDivPost.querySelector("#postMessage").value;
-      postTheme.removeAttribute("readonly");
-      postMessage.removeAttribute("readonly");
+      const currentPostTheme = parentDivPost.querySelector("#postTheme");
+      const currentPostMessage = parentDivPost.querySelector("#postMessage");
+      const theme = currentPostTheme.value;
+      const message = currentPostMessage.value;
+      if (confirm("¿estás segura que quieres editar el post?")) {
+        currentPostTheme.removeAttribute("readonly");
+        currentPostMessage.removeAttribute("readonly");
+      }
       updatePost(postId, theme, message);
     });
   });
